@@ -1,0 +1,2797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lipi Chaudhari · Product Designer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --c: #00f7ff;
+      --p: #ff2a6d;
+      --v: #b967ff;
+      --a: #ffb347;
+      --g: #39ff14;
+      --b: #2277ff;
+      --bg: #03050a;
+      --card: rgba(8, 14, 28, 0.85);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg);
+      color: #eaf0ff;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ═══ CUSTOM CURSOR ═══ */
+    #cursor-outer {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--c);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.08s, border-color 0.3s;
+      mix-blend-mode: difference;
+    }
+
+    #cursor-inner {
+      width: 8px;
+      height: 8px;
+      background: var(--p);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.04s;
+      box-shadow: 0 0 12px var(--p), 0 0 30px var(--p);
+    }
+
+    /* ═══ CANVAS BACKGROUND ═══ */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+    }
+
+    /* ═══ SCANLINES ═══ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 4px);
+      pointer-events: none;
+      z-index: 500;
+      animation: scanMove 8s linear infinite;
+    }
+
+    @keyframes scanMove {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 0 100vh;
+      }
+    }
+
+    /* ═══ NOISE OVERLAY ═══ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    /* ═══ TYPOGRAPHY ═══ */
+    h1,
+    h2,
+    h3,
+    .logo,
+    .nav-links a {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .mono {
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* ═══ KEYFRAMES ═══ */
+    @keyframes glitch {
+      0% {
+        clip-path: inset(0 0 98% 0);
+        transform: skewX(0deg);
+      }
+
+      5% {
+        clip-path: inset(40% 0 50% 0);
+        transform: skewX(-3deg);
+        text-shadow: -6px 0 var(--p);
+      }
+
+      10% {
+        clip-path: inset(80% 0 5% 0);
+        transform: skewX(3deg);
+        text-shadow: 6px 0 var(--c);
+      }
+
+      15% {
+        clip-path: inset(0 0 98% 0);
+        transform: skewX(0);
+      }
+
+      100% {
+        clip-path: inset(0 0 98% 0);
+        transform: skewX(0);
+      }
+    }
+
+    @keyframes glitch2 {
+
+      0%,
+      100% {
+        transform: translate(0);
+        opacity: 1;
+      }
+
+      20% {
+        transform: translate(-4px, 2px);
+        opacity: 0.9;
+      }
+
+      40% {
+        transform: translate(4px, -2px);
+        opacity: 0.9;
+      }
+
+      60% {
+        transform: translate(-2px, 4px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      33% {
+        transform: translateY(-14px) rotate(1deg);
+      }
+
+      66% {
+        transform: translateY(-7px) rotate(-1deg);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin-rev {
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    @keyframes pulse-border {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px var(--c), inset 0 0 20px rgba(0, 247, 255, 0.1);
+      }
+
+      50% {
+        box-shadow: 0 0 60px var(--p), 0 0 120px var(--v), inset 0 0 40px rgba(255, 42, 109, 0.15);
+      }
+    }
+
+    @keyframes hue-spin {
+      from {
+        filter: hue-rotate(0deg);
+      }
+
+      to {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    @keyframes rgb-shift {
+      0% {
+        text-shadow: 2px 0 var(--p), -2px 0 var(--c);
+      }
+
+      33% {
+        text-shadow: -2px 0 var(--v), 2px 0 var(--a);
+      }
+
+      66% {
+        text-shadow: 2px 0 var(--c), -2px 0 var(--p);
+      }
+
+      100% {
+        text-shadow: 2px 0 var(--p), -2px 0 var(--c);
+      }
+    }
+
+    @keyframes flicker {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      92% {
+        opacity: 1;
+      }
+
+      93% {
+        opacity: 0.4;
+      }
+
+      94% {
+        opacity: 1;
+      }
+
+      96% {
+        opacity: 0.1;
+      }
+
+      97% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    @keyframes border-dance {
+      0% {
+        border-color: var(--c);
+        box-shadow: 0 0 30px var(--c);
+      }
+
+      25% {
+        border-color: var(--p);
+        box-shadow: 0 0 30px var(--p);
+      }
+
+      50% {
+        border-color: var(--v);
+        box-shadow: 0 0 30px var(--v);
+      }
+
+      75% {
+        border-color: var(--a);
+        box-shadow: 0 0 30px var(--a);
+      }
+
+      100% {
+        border-color: var(--c);
+        box-shadow: 0 0 30px var(--c);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-60px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes warpIn {
+      from {
+        transform: scale(0.6) rotate(-5deg);
+        opacity: 0;
+        filter: blur(20px);
+      }
+
+      to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes neon-pulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 20px var(--c));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 20px var(--p)) drop-shadow(0 0 50px var(--p));
+      }
+    }
+
+    @keyframes stripe-move {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 60px 0;
+      }
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes type-blink {
+
+      0%,
+      100% {
+        border-color: var(--c);
+      }
+
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    /* ═══ HEADER ═══ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 4%;
+      background: rgba(2, 5, 12, 0.82);
+      backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid transparent;
+      background-clip: padding-box;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--c), var(--p), var(--v), var(--a), var(--g), var(--c));
+      background-size: 400% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      position: relative;
+      letter-spacing: 3px;
+      color: white;
+      text-shadow: 0 0 20px var(--c);
+      animation: flicker 6s infinite;
+    }
+
+    .logo-glitch {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--c), var(--p), var(--a));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: glitch 3s infinite;
+      letter-spacing: 3px;
+    }
+
+    nav {
+      display: flex;
+      gap: 0;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      padding: 0.5rem 1.4rem;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      position: relative;
+      transition: color 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(255, 42, 109, 0.1));
+      opacity: 0;
+      transition: opacity 0.2s;
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+    }
+
+    .nav-links a:hover {
+      color: var(--c);
+      text-shadow: 0 0 15px var(--c);
+    }
+
+    .nav-links a:hover::before {
+      opacity: 1;
+    }
+
+    .nav-links a.active {
+      color: var(--c);
+      border-color: rgba(0, 247, 255, 0.3);
+    }
+
+    /* ═══ TICKER BAR ═══ */
+    .ticker-wrap {
+      background: rgba(0, 0, 0, 0.5);
+      border-top: 1px solid rgba(0, 247, 255, 0.2);
+      border-bottom: 1px solid rgba(0, 247, 255, 0.2);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 6px 0;
+    }
+
+    .ticker {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--c);
+      letter-spacing: 3px;
+    }
+
+    .ticker span {
+      color: var(--p);
+      margin: 0 1.5rem;
+    }
+
+    /* ═══ SECTIONS ═══ */
+    .container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 0 4%;
+    }
+
+    section {
+      padding: 6rem 0;
+    }
+
+    /* ═══ SECTION TITLES ═══ */
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 6px;
+      margin-bottom: 4rem;
+      position: relative;
+      display: inline-block;
+      animation: rgb-shift 4s infinite;
+    }
+
+    .section-title::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0, 247, 255, 0.2);
+      transform: translate(3px, 3px);
+    }
+
+    .section-title-line {
+      display: block;
+      height: 4px;
+      background: linear-gradient(90deg, var(--c), var(--p), var(--v), transparent);
+      margin-top: 0.5rem;
+      animation: shimmer 3s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    /* ═══ HERO ═══ */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4rem;
+      width: 100%;
+    }
+
+    .hero-content {
+      flex: 1 1 380px;
+      animation: slideIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--g);
+      letter-spacing: 4px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px;
+      height: 2px;
+      background: var(--g);
+      box-shadow: 0 0 8px var(--g);
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title-line1 {
+      display: block;
+      background: linear-gradient(135deg, #fff 0%, var(--c) 40%, var(--p) 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 5s linear infinite;
+      background-size: 300% 100%;
+    }
+
+    .hero-title-line2 {
+      display: block;
+      color: var(--a);
+      text-shadow: 0 0 40px var(--a), 0 0 80px rgba(255, 179, 71, 0.4);
+      animation: flicker 8s infinite;
+      -webkit-text-stroke: 1px rgba(255, 179, 71, 0.5);
+    }
+
+    .hero-sub {
+      font-size: 1.3rem;
+      color: rgba(180, 210, 255, 0.85);
+      margin: 1.2rem 0 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .hero-sub .tag {
+      background: rgba(0, 247, 255, 0.08);
+      border: 1px solid rgba(0, 247, 255, 0.3);
+      padding: 0.2rem 0.9rem;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      clip-path: polygon(0 0, 100% 0, 100% 60%, 85% 100%, 0 100%);
+    }
+
+    .hero-sub .tag:hover {
+      background: rgba(0, 247, 255, 0.2);
+      border-color: var(--c);
+      color: var(--c);
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+    }
+
+    .hero-desc {
+      color: rgba(160, 190, 240, 0.8);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 500px;
+      padding-left: 1rem;
+      border-left: 3px solid var(--v);
+      margin-bottom: 2.5rem;
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 15, 35, 0.8);
+      border: 1px solid var(--a);
+      color: var(--a);
+      padding: 0.4rem 1.2rem;
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 179, 71, 0.3), transparent);
+      transition: left 0.4s;
+    }
+
+    .chip:hover {
+      border-color: var(--c);
+      color: var(--c);
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+    }
+
+    .chip:hover::before {
+      left: 100%;
+    }
+
+    .chip i {
+      color: var(--c);
+      font-size: 0.9rem;
+    }
+
+    /* ═══ BUTTONS ═══ */
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2.2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-decoration: none;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--c);
+      color: var(--c);
+      background: transparent;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s;
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 92% 100%, 0 100%);
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.3), inset 0 0 20px rgba(0, 247, 255, 0.05);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.4), transparent);
+      transition: left 0.45s;
+    }
+
+    .btn:hover {
+      background: var(--c);
+      color: #03050a;
+      box-shadow: 0 0 60px var(--c), 0 0 120px rgba(0, 247, 255, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-p {
+      border-color: var(--p);
+      color: var(--p);
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.3), inset 0 0 20px rgba(255, 42, 109, 0.05);
+    }
+
+    .btn-p::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 42, 109, 0.4), transparent);
+    }
+
+    .btn-p:hover {
+      background: var(--p);
+      color: #fff;
+      box-shadow: 0 0 60px var(--p);
+    }
+
+    /* ═══ HOBBIES ORBIT & HMI CORE ═══ */
+    .hero-visual {
+      flex: 1 1 420px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: warpIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .hobby-orbit-wrapper {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hobby-orbit-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .orbit-hud-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px dashed rgba(0, 247, 255, 0.04);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: rotateX(60deg) rotateY(-15deg);
+    }
+
+    .orbit-hud-lines::before,
+    .orbit-hud-lines::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.08), transparent);
+    }
+
+    /* Horizontal axes in 3D projection */
+    .orbit-hud-lines::before {
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+    }
+
+    .orbit-hud-lines::after {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(0, 247, 255, 0.08), transparent);
+    }
+
+    /* Concentric outer rings around core */
+    .core-ring-outer {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border: 1.5px dashed rgba(0, 247, 255, 0.25);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: spin 16s linear infinite;
+    }
+
+    .core-ring-inner {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border: 1px dotted rgba(255, 42, 109, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: spin-rev 10s linear infinite;
+    }
+
+    /* Ticks dial ring around core */
+    .core-ticks-ring {
+      position: absolute;
+      width: 136px;
+      height: 136px;
+      pointer-events: none;
+      animation: spin-rev 24s linear infinite;
+    }
+
+    .core-ticks-ring span {
+      position: absolute;
+      inset: 0;
+      transform: rotate(calc(var(--i) * 30deg));
+    }
+
+    .core-ticks-ring span::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 6px;
+      background: rgba(0, 247, 255, 0.4);
+      box-shadow: 0 0 4px rgba(0, 247, 255, 0.3);
+    }
+
+    /* HMI Central Core */
+    .orbit-center-core {
+      position: absolute;
+      z-index: 10;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle, rgba(6, 12, 26, 0.95) 40%, rgba(0, 247, 255, 0.15) 100%);
+      border: 2px solid var(--c);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 25px rgba(0, 247, 255, 0.35), inset 0 0 15px rgba(0, 247, 255, 0.15);
+      animation: corePulse 4s ease-in-out infinite;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .core-glow {
+      position: absolute;
+      inset: -5px;
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      border-radius: 50%;
+      animation: flicker 4s infinite;
+    }
+
+    .core-radar-sweep {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(0, 247, 255, 0.15) 0deg, rgba(0, 247, 255, 0) 90deg);
+      animation: spin 3.5s linear infinite;
+      pointer-events: none;
+    }
+
+    .core-symbol {
+      font-size: 1.8rem;
+      color: var(--c);
+      text-shadow: 0 0 12px var(--c);
+      margin-bottom: 2px;
+      transition: all 0.3s;
+      animation: coreSymbolGlow 4s ease-in-out infinite;
+    }
+
+    .core-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(234, 240, 255, 0.65);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 5px rgba(234, 240, 255, 0.5);
+    }
+
+    @keyframes corePulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        border-color: var(--c);
+        box-shadow: 0 0 25px rgba(0, 247, 255, 0.35), inset 0 0 15px rgba(0, 247, 255, 0.15);
+      }
+
+      50% {
+        transform: scale(1.05);
+        border-color: var(--p);
+        box-shadow: 0 0 35px rgba(255, 42, 109, 0.45), inset 0 0 20px rgba(255, 42, 109, 0.25);
+      }
+    }
+
+    @keyframes coreSymbolGlow {
+
+      0%,
+      100% {
+        color: var(--c);
+        text-shadow: 0 0 12px var(--c);
+      }
+
+      50% {
+        color: var(--p);
+        text-shadow: 0 0 12px var(--p);
+      }
+    }
+
+    /* Orbit Paths */
+    .orbit-path {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(0, 247, 255, 0.15);
+      pointer-events: none;
+      transform-style: preserve-3d;
+    }
+
+    .path-inner {
+      width: 260px;
+      height: 260px;
+      border-color: rgba(0, 247, 255, 0.25);
+      animation: orbit-inner 15s linear infinite;
+    }
+
+    .path-middle {
+      width: 370px;
+      height: 370px;
+      border-color: rgba(255, 42, 109, 0.2);
+      animation: orbit-middle 10s linear infinite;
+    }
+
+    .path-outer {
+      width: 480px;
+      height: 480px;
+      border-color: rgba(255, 179, 71, 0.18);
+      animation: orbit-outer 25s linear infinite;
+    }
+
+    /* Angle spacing wrappers for shared orbits */
+    .node-wrapper {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: rotate(var(--rot));
+      transform-style: preserve-3d;
+    }
+
+    /* Orbiting Nodes as Target HUD Brackets */
+    .orbit-node {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border: none;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      font-family: 'Share Tech Mono', monospace;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .node-brackets {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(4, 9, 20, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px var(--node-glow-color);
+      transition: all 0.3s;
+    }
+
+    /* Left Bracket border */
+    .node-brackets::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-left: 2px solid var(--node-color);
+      border-top: 2px solid var(--node-color);
+      border-bottom: 2px solid var(--node-color);
+      transition: all 0.3s;
+    }
+
+    /* Right Bracket border */
+    .node-brackets::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-right: 2px solid var(--node-color);
+      border-top: 2px solid var(--node-color);
+      border-bottom: 2px solid var(--node-color);
+      transition: all 0.3s;
+    }
+
+    .orbit-node i {
+      font-size: 0.95rem;
+      color: var(--node-color);
+      text-shadow: 0 0 6px var(--node-color);
+      transition: transform 0.3s;
+    }
+
+    .node-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+    }
+
+    .node-main-text {
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+    }
+
+    .node-sub-text {
+      font-size: 0.48rem;
+      color: var(--node-color);
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transform: translateY(2px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .orbit-node:hover .node-brackets {
+      background: rgba(4, 9, 20, 0.98);
+      box-shadow: 0 0 25px var(--node-color), inset 0 0 5px var(--node-color);
+    }
+
+    .orbit-node:hover .node-brackets::before {
+      width: 8px;
+    }
+
+    .orbit-node:hover .node-brackets::after {
+      width: 8px;
+    }
+
+    .orbit-node:hover i {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .orbit-node:hover .node-sub-text {
+      opacity: 0.85;
+      max-height: 12px;
+      transform: translateY(0);
+      margin-top: 2px;
+    }
+
+    /* Node Color Specifications */
+    .node-art {
+      --node-color: var(--c);
+      --node-glow-color: rgba(0, 247, 255, 0.3);
+      animation: counter-inner 15s linear infinite;
+    }
+
+    .node-graphics {
+      --node-color: var(--v);
+      --node-glow-color: rgba(185, 103, 255, 0.3);
+      animation: counter-inner 15s linear infinite;
+    }
+
+    .node-ui {
+      --node-color: var(--c);
+      --node-glow-color: rgba(0, 247, 255, 0.3);
+      animation: counter-middle 10s linear infinite;
+    }
+
+    .node-web-design {
+      --node-color: var(--a);
+      --node-glow-color: rgba(255, 179, 71, 0.3);
+      animation: counter-middle 10s linear infinite;
+    }
+
+    .node-brainstorming {
+      --node-color: var(--p);
+      --node-glow-color: rgba(255, 42, 109, 0.3);
+      animation: counter-middle 10s linear infinite;
+    }
+
+    .node-web-dev {
+      --node-color: var(--c);
+      --node-glow-color: rgba(0, 247, 255, 0.3);
+      animation: counter-outer 25s linear infinite;
+    }
+
+    .node-gaming {
+      --node-color: var(--p);
+      --node-glow-color: rgba(255, 42, 109, 0.3);
+      animation: counter-outer 25s linear infinite;
+    }
+
+    .node-auto {
+      --node-color: var(--a);
+      --node-glow-color: rgba(255, 179, 71, 0.3);
+      animation: counter-outer 25s linear infinite;
+    }
+
+    /* Pause Animation on Hover */
+    .hobby-orbit-container:hover .orbit-path,
+    .hobby-orbit-container:hover .orbit-node {
+      animation-play-state: paused;
+    }
+
+    /* Orbit 3D Keyframe Animations */
+    @keyframes orbit-inner {
+      0% {
+        transform: rotateX(65deg) rotateY(-15deg) rotateZ(0deg);
+      }
+
+      100% {
+        transform: rotateX(65deg) rotateY(-15deg) rotateZ(360deg);
+      }
+    }
+
+    @keyframes counter-inner {
+      0% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(0deg) rotateY(15deg) rotateX(-65deg) translate(-50%, -50%);
+      }
+
+      100% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(-360deg) rotateY(15deg) rotateX(-65deg) translate(-50%, -50%);
+      }
+    }
+
+    @keyframes orbit-middle {
+      0% {
+        transform: rotateX(60deg) rotateY(20deg) rotateZ(360deg);
+      }
+
+      100% {
+        transform: rotateX(60deg) rotateY(20deg) rotateZ(0deg);
+      }
+    }
+
+    @keyframes counter-middle {
+      0% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(-360deg) rotateY(-20deg) rotateX(-60deg) translate(-50%, -50%);
+      }
+
+      100% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(0deg) rotateY(-20deg) rotateX(-60deg) translate(-50%, -50%);
+      }
+    }
+
+    @keyframes orbit-outer {
+      0% {
+        transform: rotateX(70deg) rotateY(-5deg) rotateZ(0deg);
+      }
+
+      100% {
+        transform: rotateX(70deg) rotateY(-5deg) rotateZ(360deg);
+      }
+    }
+
+    @keyframes counter-outer {
+      0% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(0deg) rotateY(5deg) rotateX(-70deg) translate(-50%, -50%);
+      }
+
+      100% {
+        transform: rotateZ(calc(-1 * var(--rot))) rotateZ(-360deg) rotateY(5deg) rotateX(-70deg) translate(-50%, -50%);
+      }
+    }
+
+    /* ═══ CORNER DECORATIONS ═══ */
+    .corner-deco {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+    }
+
+    .corner-deco::before,
+    .corner-deco::after {
+      content: '';
+      position: absolute;
+      background: var(--c);
+      box-shadow: 0 0 10px var(--c);
+    }
+
+    .corner-deco::before {
+      width: 100%;
+      height: 2px;
+      top: 0;
+    }
+
+    .corner-deco::after {
+      width: 2px;
+      height: 100%;
+      top: 0;
+    }
+
+    .corner-tl {
+      top: 0;
+      left: 0;
+    }
+
+    .corner-tr {
+      top: 0;
+      right: 0;
+      transform: scaleX(-1);
+    }
+
+    .corner-bl {
+      bottom: 0;
+      left: 0;
+      transform: scaleY(-1);
+    }
+
+    .corner-br {
+      bottom: 0;
+      right: 0;
+      transform: scale(-1);
+    }
+
+    /* ═══ STAT BAR ═══ */
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 3rem;
+      animation: fadeUp 0.8s 0.5s both;
+    }
+
+    .stat-item {
+      flex: 1 1 120px;
+      background: var(--card);
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      padding: 1.2rem 1rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .stat-item:hover {
+      border-color: var(--c);
+      box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+      transform: translateY(-6px);
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c), var(--p));
+    }
+
+    .stat-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--c);
+      text-shadow: 0 0 20px var(--c);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.3rem;
+    }
+
+    /* ═══ ABOUT ═══ */
+    .about-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      align-items: stretch;
+    }
+
+    .photo-wrap {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      animation: warpIn 0.8s 0.2s both;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 320px;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%);
+      border: 3px solid rgba(0, 247, 255, 0.3);
+      filter: saturate(1.1);
+      transition: all 0.4s;
+    }
+
+    .photo-frame:hover img {
+      filter: saturate(1.4) hue-rotate(10deg);
+      transform: scale(1.02);
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 2px solid;
+      clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%);
+      animation: border-dance 5s linear infinite;
+      pointer-events: none;
+    }
+
+    .photo-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      text-align: center;
+      background: linear-gradient(135deg, var(--c), var(--p));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 4s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    .photo-role {
+      color: var(--a);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .about-content {
+      flex: 1 1 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .about-card {
+      background: var(--card);
+      border: 1px solid rgba(0, 247, 255, 0.15);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--v), var(--c), var(--p));
+      animation: shimmer 3s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    .about-card:hover {
+      border-color: rgba(0, 247, 255, 0.4);
+      box-shadow: 0 0 60px rgba(185, 103, 255, 0.2);
+      transform: translateX(8px);
+    }
+
+    .about-card blockquote {
+      font-size: 1.3rem;
+      line-height: 1.7;
+      color: rgba(220, 235, 255, 0.9);
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .about-card blockquote::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -0.3rem;
+      font-size: 3rem;
+      color: var(--p);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .skill-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 10, 25, 0.8);
+      border: 1px solid rgba(185, 103, 255, 0.4);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: all 0.25s;
+      clip-path: polygon(0 0, 100% 0, 100% 60%, 88% 100%, 0 100%);
+    }
+
+    .skill-chip i {
+      color: var(--v);
+      font-size: 0.9rem;
+    }
+
+    .skill-chip:hover {
+      border-color: var(--v);
+      color: var(--v);
+      box-shadow: 0 0 15px rgba(185, 103, 255, 0.3);
+      background: rgba(185, 103, 255, 0.1);
+    }
+
+    .fun-fact {
+      font-size: 1rem;
+      color: rgba(160, 185, 230, 0.7);
+      font-style: italic;
+      padding-left: 1rem;
+      border-left: 3px solid var(--a);
+    }
+
+    /* ═══ TIMELINE ═══ */
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 3.5rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--c), var(--p), var(--v), var(--a));
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      animation: fadeUp 0.6s both;
+    }
+
+    .tl-item:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .tl-item:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+
+    .tl-item:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .tl-dot {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      background: var(--bg);
+      border: 3px solid var(--c);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.8rem;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 20px var(--c);
+      transition: all 0.3s;
+      margin-left: 2.2rem;
+    }
+
+    .tl-dot::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--c);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--c);
+    }
+
+    .tl-item:hover .tl-dot {
+      transform: scale(1.4);
+      border-color: var(--p);
+      box-shadow: 0 0 30px var(--p);
+    }
+
+    .tl-item:hover .tl-dot::before {
+      background: var(--p);
+    }
+
+    .tl-body {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid rgba(0, 247, 255, 0.15);
+      padding: 1.8rem 2rem;
+      position: relative;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    .tl-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--c), var(--p));
+      transition: width 0.5s;
+    }
+
+    .tl-item:hover .tl-body {
+      border-color: rgba(0, 247, 255, 0.4);
+      box-shadow: 0 0 40px rgba(0, 247, 255, 0.15);
+    }
+
+    .tl-item:hover .tl-body::before {
+      width: 100%;
+    }
+
+    .tl-year {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--c);
+      text-shadow: 0 0 20px var(--c);
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .tl-body p {
+      color: rgba(180, 205, 240, 0.75);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .tl-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tl-tag {
+      background: rgba(0, 247, 255, 0.08);
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      color: var(--c);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      padding: 0.2rem 0.8rem;
+    }
+
+    /* ═══ PROJECTS ═══ */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid rgba(185, 103, 255, 0.3);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s;
+      text-align: center;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 88% 100%, 0 100%);
+      cursor: pointer;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(185, 103, 255, 0.07), rgba(0, 247, 255, 0.07));
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--v), var(--c), var(--p));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .project-card:hover {
+      border-color: var(--a);
+      box-shadow: 0 0 80px rgba(255, 179, 71, 0.25), 0 30px 80px rgba(0, 0, 0, 0.5);
+      transform: translateY(-12px) scale(1.01);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .proj-icon-wrap {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .proj-icon-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(255, 42, 109, 0.4);
+      border-radius: 50%;
+      animation: spin 8s linear infinite;
+    }
+
+    .proj-icon-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(0, 247, 255, 0.3);
+      border-radius: 50%;
+      animation: spin-rev 5s linear infinite;
+    }
+
+    .proj-icon-wrap i {
+      font-size: 2.2rem;
+      color: var(--p);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .project-card:hover .proj-icon-wrap i {
+      color: var(--a);
+      text-shadow: 0 0 20px var(--a);
+      transform: scale(1.2);
+    }
+
+    .project-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: white;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-card p {
+      color: rgba(170, 200, 240, 0.7);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .proj-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: center;
+    }
+
+    .proj-chip {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 179, 71, 0.3);
+      color: var(--a);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      letter-spacing: 2px;
+    }
+
+    /* ═══ CONTACT ═══ */
+    .contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+    }
+
+    .contact-card {
+      flex: 1 1 320px;
+      background: var(--card);
+      border: 1px solid rgba(0, 247, 255, 0.15);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(0, 247, 255, 0.4);
+      box-shadow: 0 0 60px rgba(0, 247, 255, 0.1);
+    }
+
+    .contact-card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      color: var(--c);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--c), transparent);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: rgba(0, 10, 25, 0.6);
+      border: 1px solid rgba(0, 247, 255, 0.12);
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.8rem;
+      transition: all 0.25s;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .contact-item:hover {
+      border-color: var(--c);
+      background: rgba(0, 247, 255, 0.05);
+      transform: translateX(6px);
+    }
+
+    .contact-item i {
+      font-size: 1.4rem;
+      color: var(--p);
+      width: 2rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .social-btn {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 10, 25, 0.8);
+      border: 2px solid rgba(0, 247, 255, 0.3);
+      color: white;
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      clip-path: polygon(0 0, 80% 0, 100% 20%, 100% 100%, 20% 100%, 0 80%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--c);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+
+    .social-btn i {
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s;
+    }
+
+    .social-btn:hover {
+      border-color: var(--c);
+      box-shadow: 0 0 30px var(--c);
+      transform: translateY(-8px);
+    }
+
+    .social-btn:hover::before {
+      transform: scaleY(1);
+    }
+
+    .social-btn:hover i {
+      color: #03050a;
+    }
+
+    .quote-box {
+      flex: 1 1 300px;
+      background: var(--card);
+      border: 1px solid rgba(255, 179, 71, 0.2);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 179, 71, 0.06), transparent 70%);
+    }
+
+    .quote-icon {
+      font-size: 4rem;
+      color: var(--c);
+      margin-bottom: 1.5rem;
+      animation: neon-pulse 3s infinite;
+    }
+
+    .quote-text {
+      font-size: 1.4rem;
+      line-height: 1.7;
+      font-style: italic;
+      color: var(--a);
+      text-shadow: 0 0 20px rgba(255, 179, 71, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-author {
+      margin-top: 1.5rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+    }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      padding: 2.5rem 4%;
+      border-top: 1px solid rgba(0, 247, 255, 0.2);
+      box-shadow: 0 -20px 80px rgba(0, 247, 255, 0.06);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    footer::before {
+      content: '';
+      display: block;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--c), var(--p), var(--v), transparent);
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--g);
+      letter-spacing: 2px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--g);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--g);
+      animation: flicker 3s infinite;
+    }
+
+    /* ═══ PROGRESS BARS ═══ */
+    .skill-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-bar-item {}
+
+    .skill-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: rgba(200, 220, 255, 0.7);
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-bar-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--c), var(--p));
+      position: relative;
+      transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 0;
+    }
+
+    .skill-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 100%;
+      background: white;
+      box-shadow: 0 0 10px white;
+      opacity: 0.8;
+      animation: shimmer 2s linear infinite;
+    }
+
+    .skill-bar-fill.animate {}
+
+    /* ═══ DIVIDER ═══ */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--c), var(--p), transparent);
+      margin: 0;
+      opacity: 0.3;
+    }
+
+    /* ═══ SCROLL INDICATOR ═══ */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.3);
+      animation: fadeUp 1s 1s both;
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 30px;
+      border: 1px solid rgba(0, 247, 255, 0.3);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .scroll-arrow::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: var(--c);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--c);
+      animation: float 1.5s ease-in-out infinite;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 2.8rem;
+      }
+
+      .hobby-orbit-wrapper {
+        transform: scale(0.65);
+        margin: 1.5rem 0;
+      }
+
+      .photo-frame img {
+        height: 260px;
+      }
+
+      .tl-year {
+        font-size: 1.6rem;
+      }
+
+      .timeline::before {
+        left: 2.2rem;
+      }
+
+      .tl-dot {
+        margin-left: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hobby-orbit-wrapper {
+        transform: scale(0.48);
+        margin: 0.8rem 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div id="cursor-outer"></div>
+  <div id="cursor-inner"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      LIPI
+      <span class="logo-glitch" aria-hidden="true">LIPI</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#home" class="active">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#journey">JOURNEY</a>
+      <a href="#projects">PROJECTS</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
+  </header>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      UI/UX DESIGN <span>◆</span> GRAPHIC DESIGN <span>◆</span> HMI INTERFACES <span>◆</span> WEB DEVELOPMENT
+      <span>◆</span> FIGMA <span>◆</span> PHOTOSHOP <span>◆</span> ADOBE XD <span>◆</span> LARAVEL PHP <span>◆</span>
+      PRODUCT DESIGN <span>◆</span> VISUAL STORYTELLING <span>◆</span> UI/UX DESIGN <span>◆</span> GRAPHIC DESIGN
+      <span>◆</span> HMI INTERFACES <span>◆</span> WEB DEVELOPMENT <span>◆</span> FIGMA <span>◆</span> PHOTOSHOP
+      <span>◆</span> ADOBE XD <span>◆</span> LARAVEL PHP <span>◆</span> PRODUCT DESIGN <span>◆</span> VISUAL
+      STORYTELLING <span>◆</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ══════ HOME ══════ -->
+    <section id="home">
+      <div class="container">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="hero-eyebrow">PRODUCT DESIGNER · CLASS OF 2026</div>
+
+            <h1 class="hero-title">
+              <span class="hero-title-line1">UI/UX &amp;</span>
+              <span class="hero-title-line2">HMI DESIGN</span>
+            </h1>
+
+            <div class="hero-sub">
+              <span class="tag">DEVELOPER</span>
+              <span class="tag">GRAPHICS</span>
+              <span class="tag">HMI</span>
+              <span class="tag">ARTIST</span>
+            </div>
+
+            <p class="hero-desc">
+              Passionate UI/UX and graphic designer dedicated to creating visually captivating, user-centered designs —
+              crafting seamless digital experiences with a strong focus on aesthetics, usability, and intuitive
+              interfaces.
+            </p>
+
+            <div class="chips-row">
+              <span class="chip"><i class="fas fa-brush"></i> ART</span>
+              <span class="chip"><i class="fas fa-gamepad"></i> GAMING</span>
+              <span class="chip"><i class="fas fa-car"></i> AUTOMOBILE</span>
+            </div>
+
+            <div class="btns">
+              <a href="#projects" class="btn"><i class="fas fa-play"></i> VIEW WORK</a>
+              <a href="#contact" class="btn btn-p"><i class="fas fa-signal"></i> CONNECT</a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hobby-orbit-wrapper">
+              <div class="hobby-orbit-container">
+                <!-- Cyber HUD tech lines backdrop -->
+                <div class="orbit-hud-lines"></div>
+
+                <!-- Concentric Outer HUD Rings for Center Core -->
+                <div class="core-ring-outer"></div>
+                <div class="core-ring-inner"></div>
+
+                <!-- Dashboard HUD Tickmarks Ring -->
+                <div class="core-ticks-ring">
+                  <span style="--i:1;"></span><span style="--i:2;"></span><span style="--i:3;"></span><span
+                    style="--i:4;"></span>
+                  <span style="--i:5;"></span><span style="--i:6;"></span><span style="--i:7;"></span><span
+                    style="--i:8;"></span>
+                  <span style="--i:9;"></span><span style="--i:10;"></span><span style="--i:11;"></span><span
+                    style="--i:12;"></span>
+                </div>
+
+                <!-- Central HMI Theme Core -->
+                <div class="orbit-center-core" title="Lipi Chaudhari - Cute Robot Core">
+                  <div class="core-glow"></div>
+                  <div class="core-radar-sweep"></div>
+                  <div class="core-symbol">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <div class="core-text">HMI CORE</div>
+                </div>
+
+                <!-- Orbit Path 1 (Inner): 2 Nodes -->
+                <div class="orbit-path path-inner">
+                  <div class="node-wrapper" style="--rot: 0deg;">
+                    <div class="orbit-node node-art" title="Art & Design">
+                      <div class="node-brackets">
+                        <i class="fas fa-brush"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">ART</span>
+                          <span class="node-sub-text">NEON UI // GRAPHICS</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="node-wrapper" style="--rot: 180deg;">
+                    <div class="orbit-node node-graphics" title="Graphics">
+                      <div class="node-brackets">
+                        <i class="fas fa-palette"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">GRAPHICS</span>
+                          <span class="node-sub-text">ILLUSTRATION // RENDER</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Orbit Path 2 (Middle): 3 Nodes -->
+                <div class="orbit-path path-middle">
+                  <div class="node-wrapper" style="--rot: 0deg;">
+                    <div class="orbit-node node-ui" title="UI Design">
+                      <div class="node-brackets">
+                        <i class="fas fa-vector-square"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">UI DESIGN</span>
+                          <span class="node-sub-text">WIREFRAMES // INTERACTIVE</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="node-wrapper" style="--rot: 120deg;">
+                    <div class="orbit-node node-web-design" title="Web Designing">
+                      <div class="node-brackets">
+                        <i class="fas fa-drafting-compass"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">WEB DESIGN</span>
+                          <span class="node-sub-text">LAYOUTS // FIGMA STYLE</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="node-wrapper" style="--rot: 240deg;">
+                    <div class="orbit-node node-brainstorming" title="Brainstorming">
+                      <div class="node-brackets">
+                        <i class="fas fa-lightbulb"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">BRAINSTORM</span>
+                          <span class="node-sub-text">IDEAS // MIND MAPS</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Orbit Path 3 (Outer): 3 Nodes -->
+                <div class="orbit-path path-outer">
+                  <div class="node-wrapper" style="--rot: 0deg;">
+                    <div class="orbit-node node-web-dev" title="Web Development">
+                      <div class="node-brackets">
+                        <i class="fas fa-code"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">WEB DEV</span>
+                          <span class="node-sub-text">HTML / CSS / JS STACK</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="node-wrapper" style="--rot: 120deg;">
+                    <div class="orbit-node node-gaming" title="Gaming">
+                      <div class="node-brackets">
+                        <i class="fas fa-gamepad"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">GAMING</span>
+                          <span class="node-sub-text">SIM-RACING // AC</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="node-wrapper" style="--rot: 240deg;">
+                    <div class="orbit-node node-auto" title="Automobiles">
+                      <div class="node-brackets">
+                        <i class="fas fa-car"></i>
+                        <div class="node-text-group">
+                          <span class="node-main-text">AUTOMOBILE</span>
+                          <span class="node-sub-text">DRIFTING // AUTO HMI</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="corner-deco corner-tl" style="top:-20px;left:-20px;"></div>
+            <div class="corner-deco corner-br" style="bottom:-20px;right:-20px;"></div>
+          </div>
+        </div>
+
+        <!--div class="stat-row">
+          <div class="stat-item"><span class="stat-num" data-target="3">0</span>
+            <div class="stat-label">PROJECTS</div>
+          </div>
+          <div class="stat-item"><span class="stat-num" data-target="2">0</span>
+            <div class="stat-label">YEARS EXP</div>
+          </div>
+          <div class="stat-item"><span class="stat-num" data-target="4">0</span>
+            <div class="stat-label">TOOLS</div>
+          </div>
+          <div class="stat-item"><span class="stat-num" data-target="100">0</span>
+            <div class="stat-label">PASSION %</div>
+          </div>
+        </div-->
+
+        <div class="scroll-hint">
+          <div class="scroll-arrow"></div>
+          SCROLL
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ ABOUT ══════ -->
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title" data-text="· ABOUT">· ABOUT<span class="section-title-line"></span></h2>
+        <div class="about-grid">
+
+          <div class="photo-wrap">
+            <div class="photo-frame">
+              <img src="C:\Users\kenil\OneDrive\Desktop\port\images\lipi.jpeg" alt="Lipi Chaudhari">
+            </div>
+            <div class="photo-name">Lipi Chaudhari</div>
+            <div class="photo-role">UI/UX · GRAPHICS · HMI</div>
+          </div>
+
+          <div class="about-content">
+            <div class="about-card">
+              <blockquote>
+                Computer engineer specializing in graphics &amp; HMI. I blend colors and typographies into interfaces
+                that feel alive — where function meets art.
+              </blockquote>
+            </div>
+
+            <div class="about-card">
+              <div class="skill-chips">
+                <span class="skill-chip"><i class="fab fa-figma"></i> FIGMA</span>
+                <span class="skill-chip"><i class="fas fa-cube"></i> CANVA</span>
+                <span class="skill-chip"><i class="fas fa-pen-fancy"></i> PHOTOSHOP</span>
+                <span class="skill-chip"><i class="fas fa-pen-fancy"></i> ADOBE XD</span>
+                <span class="skill-chip"><i class="fas fa-code"></i> LARAVEL PHP</span>
+              </div>
+
+              <div class="skill-bars" style="margin-top:1.5rem;">
+                <div class="skill-bar-item">
+                  <div class="skill-bar-label"><span>UI/UX Design</span><span>92%</span></div>
+                  <div class="skill-bar-track">
+                    <div class="skill-bar-fill" data-width="92"></div>
+                  </div>
+                </div>
+                <div class="skill-bar-item">
+                  <div class="skill-bar-label"><span>Graphic Design</span><span>88%</span></div>
+                  <div class="skill-bar-track">
+                    <div class="skill-bar-fill" data-width="88"
+                      style="background:linear-gradient(90deg,var(--p),var(--v))"></div>
+                  </div>
+                </div>
+                <div class="skill-bar-item">
+                  <div class="skill-bar-label"><span>Web Dev</span><span>75%</span></div>
+                  <div class="skill-bar-track">
+                    <div class="skill-bar-fill" data-width="75"
+                      style="background:linear-gradient(90deg,var(--v),var(--a))"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="fun-fact">
+              Off-duty: drifting in Assetto Corsa, binging Ghost in the Shell, or sketching neon UIs at 2 AM.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ JOURNEY ══════ -->
+    <section id="journey">
+      <div class="container">
+        <h2 class="section-title" data-text="· JOURNEY">· JOURNEY<span class="section-title-line"></span></h2>
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <div class="tl-year">'24–NOW</div>
+              <div class="tl-title">Night City Runner</div>
+              <p>Freelance Operative: Graphics &amp; Web Mercenary</p>
+              <p>Independent contractor in the digital sprawl — specializing in Graphics · UI/UX · Web Architecture</p>
+              <div class="tl-tags">
+                <span class="tl-tag">FREELANCE</span>
+                <span class="tl-tag">UI/UX</span>
+                <span class="tl-tag">WEB ARCH</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" style="border-color:var(--p);box-shadow:0 0 20px var(--p)"></div>
+            <div class="tl-body">
+              <div class="tl-year" style="color:var(--p);text-shadow:0 0 20px var(--p)">'22–26</div>
+              <div class="tl-title">Netrunner-in-Training / Final Level</div>
+              <p>RNG Patel Institute of Technology</p>
+              <p>B.E. Computer Science &amp; Engineering — Hacking the matrix with UI/UX Design · Web Dev · Graphic
+                Design</p>
+              <div class="tl-tags" style="">
+                <span class="tl-tag" style="border-color:rgba(255,42,109,0.3);color:var(--p)">B.E. CSE</span>
+                <span class="tl-tag" style="border-color:rgba(255,42,109,0.3);color:var(--p)">FINAL YEAR</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" style="border-color:var(--v);box-shadow:0 0 20px var(--v)"></div>
+            <div class="tl-body">
+              <div class="tl-year" style="color:var(--v);text-shadow:0 0 20px var(--v)">'20–22</div>
+              <div class="tl-title">Higher-Secondary Node</div>
+              <p>Vasishtha Genesis School, Bardoli sector</p>
+              <p>Science Stream + Art &amp; Design overlay — where the visual obsession began.</p>
+              <div class="tl-tags">
+                <span class="tl-tag" style="border-color:rgba(185,103,255,0.3);color:var(--v)">SCIENCE</span>
+                <span class="tl-tag" style="border-color:rgba(185,103,255,0.3);color:var(--v)">ART</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ PROJECTS ══════ -->
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title" data-text="· PR0JECTS">· PR0JECTS<span class="section-title-line"></span></h2>
+        <div class="project-grid">
+
+          <div class="project-card">
+            <div class="proj-icon-wrap"><i class="fas fa-car"></i></div>
+            <h3>CoShare: CarPooling</h3>
+            <p>Car pooling application for daily travellers — seamless ride matching with clean UI</p>
+            <div class="proj-chips">
+              <span class="proj-chip">PHP</span>
+              <span class="proj-chip">MySQL</span>
+              <span class="proj-chip">UI/UX</span>
+            </div>
+          </div>
+
+          <div class="project-card" style="border-color:rgba(0,247,255,0.3)">
+            <div class="proj-icon-wrap" style="">
+              <div
+                style="position:absolute;inset:0;border:2px solid rgba(0,247,255,0.4);border-radius:50%;animation:spin 8s linear infinite;">
+              </div>
+              <div
+                style="position:absolute;inset:8px;border:1px dashed rgba(185,103,255,0.3);border-radius:50%;animation:spin-rev 5s linear infinite;">
+              </div>
+              <i class="fas fa-book" style="font-size:2.2rem;color:var(--c);position:relative;z-index:1;"></i>
+            </div>
+            <h3>Buzz Blog</h3>
+            <p>A blogging platform for knowledge sharing — clean editorial layouts &amp; intuitive navigation</p>
+            <div class="proj-chips">
+              <span class="proj-chip" style="border-color:rgba(0,247,255,0.3);color:var(--c)">WordPress</span>
+              <span class="proj-chip" style="border-color:rgba(0,247,255,0.3);color:var(--c)">PHP</span>
+              <span class="proj-chip" style="border-color:rgba(0,247,255,0.3);color:var(--c)">MySQL</span>
+            </div>
+          </div>
+
+          <div class="project-card" style="border-color:rgba(57,255,20,0.3)">
+            <div class="proj-icon-wrap">
+              <div
+                style="position:absolute;inset:0;border:2px solid rgba(57,255,20,0.4);border-radius:50%;animation:spin 8s linear infinite;">
+              </div>
+              <div
+                style="position:absolute;inset:8px;border:1px dashed rgba(57,255,20,0.2);border-radius:50%;animation:spin-rev 5s linear infinite;">
+              </div>
+              <i class="fas fa-building" style="font-size:2.2rem;color:var(--g);position:relative;z-index:1;"></i>
+            </div>
+            <h3>Qubitize</h3>
+            <p>Website of my firm — corporate identity design, brand system, and full web architecture</p>
+            <div class="proj-chips">
+              <span class="proj-chip" style="border-color:rgba(57,255,20,0.3);color:var(--g)">PHP</span>
+              <span class="proj-chip" style="border-color:rgba(57,255,20,0.3);color:var(--g)">Figma</span>
+              <span class="proj-chip" style="border-color:rgba(57,255,20,0.3);color:var(--g)">Branding</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ CONTACT ══════ -->
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title" data-text="· C0NTACT">· C0NTACT<span class="section-title-line"></span></h2>
+        <div class="contact-grid">
+
+          <div class="contact-card">
+            <div class="contact-card-title">SIGNAL CHANNEL</div>
+            <div class="contact-item"><i class="fas fa-envelope"></i>lipi0105.design@gmail.com</div>
+            <div class="contact-item"><i class="fas fa-map-pin"></i>Surat / Gujarat, India</div>
+            <div class="contact-item"><i class="fab fa-discord"></i>_.lilcifer</div>
+            <div class="social-row">
+              <a href="https://discord.gg/v9kd5EPa" class="social-btn" title="Discord"><i
+                  class="fab fa-discord"></i></a>
+              <a href="https://www.instagram.com/lipi0105?igsh=MWhveTQ2bHB6dDFxYQ%3D%3D" class="social-btn"
+                title="Instagram" style="border-color:rgba(255,42,109,0.4)"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/lipi-chaudhari-0444643b7" class="social-btn" title="LinkedIn"
+                style="border-color:rgba(34,119,255,0.4)"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://github.com/lipi0105" class="social-btn" title="GitHub"
+                style="border-color:rgba(185,103,255,0.4)"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+
+          <div class="quote-box">
+            <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+            <p class="quote-text">"Let's create something that feels like the future."</p>
+            <p class="quote-author">— LIPI CHAUDHARI</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div
+      style="width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--c),var(--p),var(--v),transparent);margin-bottom:1.5rem;opacity:0.4;">
+    </div>
+    <span class="footer-text">© 2026 LIPI CHAUDHARI · UI/UX · PORTFOLIO · SURAT</span>
+    <div class="footer-status">
+      <div class="status-dot"></div> SYSTEM ONLINE
+    </div>
+  </footer>
+
+  <script>
+    // ═══ CANVAS PARTICLE FIELD ═══
+    (function () {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [], lines = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const COLORS = ['#00f7ff', '#ff2a6d', '#b967ff', '#ffb347', '#39ff14'];
+      const N = 80;
+
+      for (let i = 0; i < N; i++) {
+        particles.push({
+          x: Math.random() * 2000, y: Math.random() * 1200,
+          vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 1.5 + 0.5,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          alpha: Math.random() * 0.6 + 0.2
+        });
+      }
+
+      // Grid lines
+      function drawGrid() {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(0,247,255,0.03)';
+        ctx.lineWidth = 1;
+        const gs = 80;
+        for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+        for (let y = 0; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+        ctx.restore();
+      }
+
+      let mx = W / 2, my = H / 2;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+      function frame() {
+        ctx.fillStyle = '#03050a';
+        ctx.fillRect(0, 0, W, H);
+
+        // radial glows
+        const grd1 = ctx.createRadialGradient(W * 0.2, H * 0.3, 0, W * 0.2, H * 0.3, W * 0.4);
+        grd1.addColorStop(0, 'rgba(27,41,75,0.5)'); grd1.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd1; ctx.fillRect(0, 0, W, H);
+
+        const grd2 = ctx.createRadialGradient(W * 0.8, H * 0.7, 0, W * 0.8, H * 0.7, W * 0.35);
+        grd2.addColorStop(0, 'rgba(255,0,255,0.08)'); grd2.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd2; ctx.fillRect(0, 0, W, H);
+
+        const grd3 = ctx.createRadialGradient(mx, my, 0, mx, my, 250);
+        grd3.addColorStop(0, 'rgba(0,247,255,0.04)'); grd3.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd3; ctx.fillRect(0, 0, W, H);
+
+        drawGrid();
+
+        // particle connections
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < 160) {
+              ctx.save();
+              ctx.globalAlpha = (1 - d / 160) * 0.12;
+              ctx.strokeStyle = particles[i].color;
+              ctx.lineWidth = 0.5;
+              ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+              ctx.restore();
+            }
+          }
+        }
+
+        // particles
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+          if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          ctx.fillStyle = p.color;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        });
+
+        requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    // ═══ CUSTOM CURSOR ═══
+    (function () {
+      const outer = document.getElementById('cursor-outer');
+      const inner = document.getElementById('cursor-inner');
+      let ox = 0, oy = 0, ix = 0, iy = 0;
+      document.addEventListener('mousemove', e => {
+        ix = e.clientX; iy = e.clientY;
+        inner.style.left = ix + 'px'; inner.style.top = iy + 'px';
+      });
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      (function loop() {
+        ox = lerp(ox, ix, 0.12); oy = lerp(oy, iy, 0.12);
+        outer.style.left = (ox - 18) + 'px'; outer.style.top = (oy - 18) + 'px';
+        requestAnimationFrame(loop);
+      })();
+      document.querySelectorAll('a,button,.project-card,.social-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => { outer.style.transform = 'scale(2)'; outer.style.borderColor = 'var(--p)'; });
+        el.addEventListener('mouseleave', () => { outer.style.transform = 'scale(1)'; outer.style.borderColor = 'var(--c)'; });
+      });
+    })();
+
+    // ═══ ACTIVE NAV ═══
+    (function () {
+      const links = document.querySelectorAll('.nav-links a');
+      const sections = document.querySelectorAll('section');
+      window.addEventListener('scroll', () => {
+        let cur = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+        links.forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href').includes(cur)) l.classList.add('active');
+        });
+      });
+    })();
+
+    // ═══ COUNTER ANIMATION ═══
+    (function () {
+      const els = document.querySelectorAll('[data-target]');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target, target = +el.dataset.target;
+          let start = 0, dur = 1500, s = performance.now();
+          function step(t) {
+            const p = Math.min((t - s) / dur, 1);
+            el.textContent = Math.floor(p * target) + (target === 100 ? '%' : '');
+            if (p < 1) requestAnimationFrame(step); else el.textContent = target + (target === 100 ? '%' : '');
+          }
+          requestAnimationFrame(step);
+          obs.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      els.forEach(el => obs.observe(el));
+    })();
+
+    // ═══ SKILL BARS ═══
+    (function () {
+      const bars = document.querySelectorAll('.skill-bar-fill');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const bar = e.target;
+          bar.style.width = bar.dataset.width + '%';
+          obs.unobserve(bar);
+        });
+      }, { threshold: 0.3 });
+      bars.forEach(b => obs.observe(b));
+    })();
+
+    // ═══ STAGGER SECTION REVEAL ═══
+    (function () {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.tl-item,.project-card,.contact-card,.about-card,.stat-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+        obs.observe(el);
+      });
+    })();
+
+    // ═══ HOBBIES ORBIT PARALLAX ═══
+    (function () {
+      const container = document.querySelector('.hobby-orbit-container');
+      const heroVisual = document.querySelector('.hero-visual');
+      if (container && heroVisual) {
+        heroVisual.addEventListener('mousemove', e => {
+          const rect = heroVisual.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const rx = -(y / rect.height) * 25;
+          const ry = (x / rect.width) * 25;
+          container.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        heroVisual.addEventListener('mouseleave', () => {
+          container.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          container.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+        heroVisual.addEventListener('mouseenter', () => {
+          container.style.transition = 'transform 0.1s ease-out';
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
